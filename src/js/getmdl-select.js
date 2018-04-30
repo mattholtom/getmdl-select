@@ -11,6 +11,15 @@
 
     }());
 
+    // For IE Compatibility
+    // source: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+    function CustomEvent(event, params) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+    }
+
     var getmdlSelect = {
         _addEventListeners: function (dropdown) {
             var input = dropdown.querySelector('input');
@@ -62,7 +71,12 @@
                 [].forEach.call(menus, function (menu) {
                     menu['MaterialMenu'].hide();
                 });
-                var event = new Event('closeSelect');
+
+                var event;                
+                try { event = new Event('closeSelect'); } catch (err) { }
+                if (event == undefined) {
+                    event = window.CustomEvent('closeSelect');
+                }
                 menu.dispatchEvent(event);
             };
             document.body.addEventListener('click', hideAllMenus, false);
