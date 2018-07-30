@@ -2,7 +2,6 @@
     'use strict';
     (function () {
         function whenLoaded() {
-            getmdlSelect.init('.getmdl-select');
             if (window.NodeList && !NodeList.prototype.forEach) {
               NodeList.prototype.forEach = function (callback, thisArg) {
                 thisArg = thisArg || window;
@@ -11,6 +10,7 @@
                 }
               };
             }
+            getmdlSelect.init('.getmdl-select');
         };
 
         window.addEventListener ?
